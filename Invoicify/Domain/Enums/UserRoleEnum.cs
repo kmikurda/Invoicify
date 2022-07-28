@@ -2,8 +2,10 @@ using System.ComponentModel;
 
 namespace Domain.Enums;
 
-public enum UserRole
+public enum UserRoleEnum
 {
+    [Description("Przeglądający")]
+    Readonly,
     [Description("Księgowość")]
     Bookkeeping,
     [Description("Kierownik księgowości")]
@@ -14,7 +16,8 @@ public enum UserRole
     ChambersSupervisor,
     [Description("Administrator")]
     Admin,
-    [Description("Przeglądający")]
-    Readonly,
+    [Description("DevAdmin")]
+    DevAdmin,
+    
     
 }

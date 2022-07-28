@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="ValueObjects" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Serilog" Version="2.12.0-dev-01439" />
       <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
       <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.1-dev-00787" />
@@ -19,6 +15,10 @@
       <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.3-dev-00066" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00337" />
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

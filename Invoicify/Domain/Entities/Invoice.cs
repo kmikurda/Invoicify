@@ -9,9 +9,9 @@ public class Invoice : BaseEntity
 {
     public int Id { get; set; }
     [MaxLength(64)]
-    public string InvoiceNumber { get; set; }
+    public string? InvoiceNumber { get; set; }
     [MaxLength(64)]
-    public string InternalInvoiceNumber { get; set; }
+    public string? InternalInvoiceNumber { get; set; }
     public DateTime InvoiceCreateDate { get; set; }
     public DateTime DateOfPurchase { get; set; }
     public DateTime PaymentDeadline { get; set; }
@@ -20,7 +20,7 @@ public class Invoice : BaseEntity
     public CurrencyEnum Currency { get; set; }
     public bool HasPZ { get; set; }
     [MaxLength(64)]
-    public string PZNumber { get; set; }
+    public string? PZNumber { get; set; }
     public bool HasToBeAuthorized { get; set; }
     [MaxLength(256)]
     public string? Description { get; set; }
@@ -29,8 +29,8 @@ public class Invoice : BaseEntity
     public InvoiceAuthorizationStateEnum AuthorizationState { get; set; }
     public int ContractorId { get; set; }
     public Contractor Contractor { get; set; }
-    public List<Revert> Reverts { get; set; }
-    public List<Authorization> Authorizations { get; set; }
+    public List<Revert>? Reverts { get; set; }
+    public List<Authorization>? Authorizations { get; set; }
     public List<Product> Products { get; set; }
 
 }

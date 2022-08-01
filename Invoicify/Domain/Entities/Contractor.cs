@@ -4,7 +4,6 @@ namespace Domain.Entities;
 
 public class Contractor
 {
-    public int Id { get; set; }
     [MaxLength(256)]
     public string Name { get; set; }
     [MaxLength(128)] 

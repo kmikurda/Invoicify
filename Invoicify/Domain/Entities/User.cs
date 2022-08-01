@@ -5,7 +5,6 @@ namespace Domain.Entities;
 
 public class User : BaseEntity
 {
-    public int Id { get; set; }
     [MaxLength(32)]
     public string Name { get; set; }
     [MaxLength(256)]

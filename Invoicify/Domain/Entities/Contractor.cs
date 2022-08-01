@@ -19,4 +19,5 @@ public class Contractor
     public string? REGON { get; set; }
 
     public List<UserContractor>? AssociatedEmployees { get; set; }
+    public List<Invoice>? Invoices { get; set; }
 }

@@ -14,4 +14,7 @@ public class Authorization : BaseEntity
     public RevertAuthorizationReasonEnum RevertReason { get; set; }
     [MaxLength(256)]
     public string Remark { get; set; }
+
+    public int InvoiceId { get; set; }
+    public Invoice Invoice { get; set; }
 }

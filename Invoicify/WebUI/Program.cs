@@ -26,7 +26,7 @@ try
 }
 catch (Exception e)
 {
-    Log.Fatal("Fatal error");
+    Log.Fatal($"Fatal error: {e}");
 }
 finally
 {

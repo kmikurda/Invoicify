@@ -1,6 +1,4 @@
 using System.ComponentModel;
-using Infrastructure.Helpers.TimeProvider;
-
 namespace Domain.Entities;
 
 public class BaseEntity
@@ -13,6 +11,5 @@ public class BaseEntity
     
     protected BaseEntity()
     {
-        CreateDate = SystemTime.Now();
     }
 }

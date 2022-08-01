@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Enums.Invoice;
 
 namespace Domain.Entities;
 
-public class Product : BaseEntity
+public class InvoiceStateAction : BaseEntity
 {
     public int Id { get; set; }
     [MaxLength(256)]
-    public string Name { get; set; }
-    public int Qty { get; set; }
-    public double NetPrice { get; set; }
-    public int Vat { get; set; }
+    public string? Remark { get; set; }
+    public InvoiceStateEnum InvoiceState { get; set; }
 
     public int InvoiceId { get; set; }
     public Invoice Invoice { get; set; }

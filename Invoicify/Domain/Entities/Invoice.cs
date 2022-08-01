@@ -29,7 +29,7 @@ public class Invoice : BaseEntity
     public InvoiceAuthorizationStateEnum AuthorizationState { get; set; }
     public int ContractorId { get; set; }
     public Contractor Contractor { get; set; }
-    public List<Revert>? Reverts { get; set; }
+    public List<InvoiceStateAction>? InvoiceStateActions { get; set; }
     public List<Authorization>? Authorizations { get; set; }
     public List<Product> Products { get; set; }
 

@@ -1,13 +1,11 @@
-using System.Configuration;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Context;
 
 public class InvoicifyContext : DbContext
 {
-    private readonly string _connectionString;
+    private readonly string? _connectionString;
 
     public InvoicifyContext()
     {
@@ -19,7 +17,7 @@ public class InvoicifyContext : DbContext
         
     }
 
-    public InvoicifyContext(string connectionString)
+    public InvoicifyContext(string? connectionString)
     {
         _connectionString = connectionString;
     }
@@ -33,30 +31,46 @@ public class InvoicifyContext : DbContext
         optionsBuilder.UseSqlServer(_connectionString);
     }
     
-    public DbSet<Invoice> Invoices { get; set; }
-    public DbSet<Authorization> Authorizations { get; set; }
-    public DbSet<Contractor> Contractors { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<UserContractor> UserContractor { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
-    public DbSet<Revert> Reverts { get; set; }
+    public DbSet<Invoice>? Invoices { get; set; }
+    public DbSet<Authorization>? Authorizations { get; set; }
+    public DbSet<Contractor>? Contractors { get; set; }
+    public DbSet<Product>? Products { get; set; }
+    public DbSet<User>? Users { get; set; }
+    public DbSet<UserContractor>? UserContractor { get; set; }
+    public DbSet<UserRole>? UserRoles { get; set; }
+    public DbSet<InvoiceStateAction>? InvoiceStateActions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Invoice>().ToTable("Invoices");
-        modelBuilder.Entity<Authorization>().ToTable("Invoices");
-        modelBuilder.Entity<Contractor>().ToTable("Invoices");
-        modelBuilder.Entity<Product>().ToTable("Invoices");
-        modelBuilder.Entity<User>().ToTable("Invoices");
-        modelBuilder.Entity<UserContractor>().ToTable("Invoices");
-        modelBuilder.Entity<UserRole>().ToTable("Invoices");
-        modelBuilder.Entity<Revert>().ToTable("Invoices");
+        modelBuilder.Entity<Authorization>().ToTable("Authorizations");
+        modelBuilder.Entity<Contractor>().ToTable("Contractors");
+        modelBuilder.Entity<Product>().ToTable("Products");
+        modelBuilder.Entity<User>().ToTable("Users");
+        modelBuilder.Entity<UserContractor>().ToTable("UserContractor");
+        modelBuilder.Entity<UserRole>().ToTable("UserRoles");
+        modelBuilder.Entity<InvoiceStateAction>().ToTable("InvoiceStateActions");
 
 
         modelBuilder.Entity<UserContractor>().HasKey(x => new {x.UserId, x.ContractorId});
         
+        modelBuilder.Entity<Invoice>().HasOne<Contractor>(i => i.Contractor)
+            .WithMany(c => c.Invoices)
+            .HasForeignKey(i => i.ContractorId);
+
+        modelBuilder.Entity<Invoice>().HasMany<Authorization>(i => i.Authorizations)
+            .WithOne(a => a.Invoice)
+            .HasForeignKey(a => a.InvoiceId);
+
+        modelBuilder.Entity<Invoice>().HasMany<Product>(i => i.Products)
+            .WithOne(p => p.Invoice)
+            .HasForeignKey(p => p.InvoiceId);
+
+        modelBuilder.Entity<Invoice>().HasMany<InvoiceStateAction>(i => i.InvoiceStateActions)
+            .WithOne(ia => ia.Invoice)
+            .HasForeignKey(ia => ia.InvoiceId);
+
     }
 }

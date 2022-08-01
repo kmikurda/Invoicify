@@ -22,14 +22,16 @@ public class InvoicifyContextFactory : IDesignTimeDbContextFactory<InvoicifyCont
         string? connectionString;
         try
         {
-            connectionString =
-                new ConfigurationBuilder()
-                    .SetBasePath(AppContext.BaseDirectory + "../../WebUI")
-                    .AddJsonFile("appsettings.json")
-                    .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
-                    .AddEnvironmentVariables()
-                    .Build()
-                    .GetConnectionString(ConnectionStringName);
+            // connectionString =
+            //     new ConfigurationBuilder()
+            //         .SetBasePath(AppContext.BaseDirectory + "../../WebUI")
+            //         .AddJsonFile("appsettings.json")
+            //         .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
+            //         .AddEnvironmentVariables()
+            //         .Build()
+            //         .GetConnectionString(ConnectionStringName);
+
+            connectionString = "Server=KMIKURDA\\SQLEXPRESS;Database=Invoicify;Trusted_Connection=True"; //TODO temp override
         }
         catch (Exception ex)
         {

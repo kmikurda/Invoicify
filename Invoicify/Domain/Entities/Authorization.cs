@@ -6,7 +6,6 @@ namespace Domain.Entities;
 
 public class Authorization : BaseEntity
 {
-    public int Id { get; set; }
     public AuthorizationStateEnum AuthorizationState { get; set; }
     public int UserId { get; set; }
     public User User { get; set; }

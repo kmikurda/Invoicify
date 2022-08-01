@@ -7,7 +7,6 @@ namespace Domain.Entities;
 
 public class Invoice : BaseEntity
 {
-    public int Id { get; set; }
     [MaxLength(64)]
     public string? InvoiceNumber { get; set; }
     [MaxLength(64)]

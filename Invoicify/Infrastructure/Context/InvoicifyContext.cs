@@ -6,6 +6,8 @@ namespace Infrastructure.Context;
 public class InvoicifyContext : DbContext
 {
     private readonly string? _connectionString;
+    public static string ConnectionStringName = "InvoicifyContext";
+
 
     public InvoicifyContext()
     {
@@ -44,14 +46,14 @@ public class InvoicifyContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Invoice>().ToTable("Invoices");
-        modelBuilder.Entity<Authorization>().ToTable("Authorizations");
+        modelBuilder.Entity<Invoice>().ToTable("Invoices", i => i.IsTemporal());
+        modelBuilder.Entity<Authorization>().ToTable("Authorizations", a => a.IsTemporal());
         modelBuilder.Entity<Contractor>().ToTable("Contractors");
         modelBuilder.Entity<Product>().ToTable("Products");
         modelBuilder.Entity<User>().ToTable("Users");
         modelBuilder.Entity<UserContractor>().ToTable("UserContractor");
         modelBuilder.Entity<UserRole>().ToTable("UserRoles");
-        modelBuilder.Entity<InvoiceStateAction>().ToTable("InvoiceStateActions");
+        modelBuilder.Entity<InvoiceStateAction>().ToTable("InvoiceStateActions", ia => ia.IsTemporal());
 
 
         modelBuilder.Entity<UserContractor>().HasKey(x => new {x.UserId, x.ContractorId});

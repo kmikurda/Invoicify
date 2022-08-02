@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class Contractor
+public class Contractor : BaseEntity
 {
     [MaxLength(256)]
     public string Name { get; set; }

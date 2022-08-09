@@ -50,6 +50,33 @@ public class InvoiceController : ControllerBase
         return Ok(invoice);
     }
     
+    [HttpGet("[action]")]
+    public async Task<IActionResult> SeedInvoiceHistory()
+    {
+        var invoice = new Invoice()
+        {
+            CreateDate = DateTime.Now,
+            ModDate = DateTime.Now,
+            DateOfPurchase = DateTime.Now,
+            InternalInvoiceNumber = "FV-008-2022",
+            HasPZ = true,
+            HasToBeAuthorized = true,
+            ContractorId = 1
+        };
+        _invoiceWriteRepository.Add(invoice);
+        
+        var authorization = new Authorization()
+        {
+            C
+        }
+            
+            
+            
+            
+        await _invoiceWriteRepository.SaveChangesAsync();
+        return Ok(invoice);
+    }
+    
     
     [HttpPost("[action]")]
     public async Task<IActionResult> RenameInvoice(string newName)

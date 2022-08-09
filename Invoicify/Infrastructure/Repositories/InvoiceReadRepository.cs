@@ -19,20 +19,27 @@ public class InvoiceReadRepository : ReadRepository<Invoice>, IInvoiceReadReposi
     {
         if (_context.Invoices != null)
         {
-            var query = await _context.Invoices.TemporalAll()
-                .ToListAsync();
-
-            var query2 = await _context.Invoices.TemporalAll()
-                .Where(x => x.Id == id).ToListAsync();
-
-            var authorization = await _context.Authorizations.Where(x => x.InvoiceId == id).ToListAsync();
-            var invoice
+            // var query = await _context.Invoices.TemporalAll()
+            //     .ToListAsync();
+            //
+            // var query2 = await _context.Invoices.TemporalAll()
+            //     .Where(x => x.Id == id).ToListAsync();
+            //
+            // var authorization = await _context.Authorizations.Where(x => x.InvoiceId == id).ToListAsync();
+             var invoice = await _context.Invoices.TemporalAsOf(DateTime.Now).Where(x => x.Id == 2).Select(x => new
+            {
+                x.Id,
+                InvoiceState = x.InvoiceState.ToString(),
+                AuthorizationState = x.AuthorizationState.ToString(),
+                Authorizations = x.Authorizations.Select(y => y.AuthorizationState).ToList(),
+                Actions = x.InvoiceStateActions.Select(y => y.InvoiceState).ToList()
+            }).ToListAsync();
             var query3 = await _context.Invoices.TemporalAll()
                 .Include(x => x.Authorizations)
                 .Where(x => x.Id == id)
                 .ToListAsync();
 
-            return query;
+            return new List<Invoice>();
         }
         return null;
     }

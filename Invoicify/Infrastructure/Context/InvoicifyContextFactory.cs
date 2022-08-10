@@ -31,7 +31,9 @@ public class InvoicifyContextFactory : IDesignTimeDbContextFactory<InvoicifyCont
             //         .Build()
             //         .GetConnectionString(ConnectionStringName);
 
-            connectionString = "Server=KMIKURDA\\SQLEXPRESS;Database=Invoicify;Trusted_Connection=True"; //TODO temp override
+           // connectionString = "Server=KMIKURDA\\SQLEXPRESS;Database=Invoicify;Trusted_Connection=True"; //TODO temp override
+            connectionString =
+                "Server=tcp:kmikurda.database.windows.net,1433;Initial Catalog=Invoicify;Persist Security Info=False;User ID=kmikurda;Password=Wielka09$$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         }
         catch (Exception ex)
         {

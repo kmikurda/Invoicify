@@ -9,7 +9,7 @@ public enum UserRoleEnum
     [Description("Potwierdzający")]
     Approval,
     [Description("Księgowość")]
-    Bookkeeping,
+    Bookkeeping = 10,
     [Description("Kierownik księgowości")]
     BookkeepingSupervisor,
     [Description("Kancelaria")]
@@ -21,7 +21,7 @@ public enum UserRoleEnum
     [Description("Kierownik działu zakupów")]
     PurchasingDepartmentSupervisor,
     [Description("Administrator")]
-    Admin,
+    Admin = 100,
     [Description("DevAdmin")]
     DevAdmin,
 }

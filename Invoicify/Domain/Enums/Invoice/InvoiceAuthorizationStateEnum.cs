@@ -2,6 +2,7 @@
 
 public enum InvoiceAuthorizationStateEnum
 {
+    None,
     WaitingForApproval,
     Approved,
     ApprovedPartially,

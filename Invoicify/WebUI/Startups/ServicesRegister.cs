@@ -12,7 +12,7 @@ public class ServicesRegister
     {
         //DbContext
         services.AddDbContext<InvoicifyContext>(opts =>
-            opts.UseSqlServer("Server=KMIKURDA\\SQLEXPRESS;Database=Invoicify;Trusted_Connection=True"));
+            opts.UseSqlServer(configuration.GetConnectionString("InvoicifyContext")));
         //Repositories
         services.AddScoped<IInvoiceReadRepository, InvoiceReadRepository>();
         services.AddScoped<IInvoiceWriteRepository, InvoiceWriteRepository>();

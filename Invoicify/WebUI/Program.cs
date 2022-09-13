@@ -3,6 +3,10 @@ using Invoicify.Startups;
 using MediatR;
 using Microsoft.Extensions.Logging.Configuration;
 using Serilog;
+using ILogger = Serilog.ILogger;
+
+var environment = Environment.GetEnvironmentVariable("MCS_ENVIRONMENT") ?? "Development";
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMediatR(typeof(GetAllUsersQuery));
@@ -11,17 +15,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", false, true)
+    .AddJsonFile($"appsettings.{environment}.json", true, true)
+    .AddEnvironmentVariables();
 
-
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .Build();
-
-ServicesRegister.RegisterServices(builder.Services,configuration);
-
+ServicesRegister.RegisterServices(builder.Services,builder.Configuration);
 // Serilog config
 Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
+    .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
 
 builder.Host.UseSerilog();

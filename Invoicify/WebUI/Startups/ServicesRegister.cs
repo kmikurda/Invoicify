@@ -16,5 +16,6 @@ public class ServicesRegister
         //Repositories
         services.AddScoped<IInvoiceReadRepository, InvoiceReadRepository>();
         services.AddScoped<IInvoiceWriteRepository, InvoiceWriteRepository>();
+        services.AddScoped<IAuthorizationWriteRepository, AuthorizationWriteRepository>();
     }
 }

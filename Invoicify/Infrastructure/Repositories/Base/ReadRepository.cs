@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
 using Domain.Entities;
+using Infrastructure.Context;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,12 +10,11 @@ namespace Infrastructure.Repositories.Base;
 public class ReadRepository<T> : IReadRepository<T>
     where T : BaseEntity, new()
 {
-    private readonly DbContext _context;
+    private readonly InvoicifyContext _context;
 
-    public ReadRepository(DbContext context)
+    public ReadRepository(InvoicifyContext context)
     {
         _context = context;
-        _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
     public virtual Task<List<T>>  GetAllAsync()

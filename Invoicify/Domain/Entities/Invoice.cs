@@ -31,5 +31,4 @@ public class Invoice : BaseEntity
     public List<InvoiceStateAction>? InvoiceStateActions { get; set; }
     public List<Authorization>? Authorizations { get; set; }
     public List<Product> Products { get; set; }
-
 }

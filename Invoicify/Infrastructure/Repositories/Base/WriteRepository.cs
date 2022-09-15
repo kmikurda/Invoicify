@@ -4,6 +4,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
+using Infrastructure.Context;
 using Infrastructure.Interfaces;
 
 namespace Infrastructure.Repositories.Base;
@@ -11,18 +12,10 @@ namespace Infrastructure.Repositories.Base;
 public class WriteRepository<T> : IWriteRepository<T>
     where T : BaseEntity, new()
 {
-    private readonly DbContext _context;
-    private IDbContextTransaction _transaction;
-
-    public WriteRepository(DbContext context)
+    private readonly InvoicifyContext _context;
+    public WriteRepository(InvoicifyContext context)
     {
         _context = context;
-    }
-
-    public async Task StartTransaction(CancellationToken token)
-    {
-        _transaction = await _context.Database.BeginTransactionAsync(token);
-
     }
 
     public Task<T> GetSingleAsync(int id)
@@ -38,6 +31,11 @@ public class WriteRepository<T> : IWriteRepository<T>
     public virtual void Add(T entity)
     {
         _context.Set<T>().Add(entity);
+    }
+
+    public void Update(T entity)
+    {
+        _context.Set<T>().Update(entity);
     }
 
     public virtual void SoftDelete(T entity)
@@ -62,15 +60,7 @@ public class WriteRepository<T> : IWriteRepository<T>
         return _context.SaveChangesAsync();
     }
 
-    public virtual void CommitTransaction()
-    {
-        _transaction.Commit();
-    }
-
-    public virtual void RollbackTransaction()
-    {
-        _transaction.Rollback();
-    }
+ 
 
     public virtual Task<List<T>> GetAllAsync()
     {
@@ -80,6 +70,5 @@ public class WriteRepository<T> : IWriteRepository<T>
     public void Dispose()
     {
         _context.Dispose();
-        _transaction?.Dispose();
     }
 }

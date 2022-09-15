@@ -110,16 +110,16 @@ public class InvoiceController : ControllerBase
     }
     
     
-    [HttpPost("[action]")]
+    [HttpPut("[action]")]
     public async Task<IActionResult> RenameInvoice(string newName)
     {
         var invoice = await _invoiceWriteRepository.GetSingleAsync(2);
         invoice.InternalInvoiceNumber = newName;
+        invoice.Description = "aOPISOPIOSOPIS";
+    //    _invoiceWriteRepository.Update(invoice);
         await _invoiceWriteRepository.SaveChangesAsync();
-
-        var temp = await _invoiceReadRepository.GetSingleAsync(2);
-        return Ok(invoice);
-
+        
+        return Ok();
     }
 
     
@@ -133,7 +133,7 @@ public class InvoiceController : ControllerBase
     }
 
 
-    public InvoiceAuthorizationStateEnum SetStateEnum(AuthorizationStateEnum authEnum,
+    private InvoiceAuthorizationStateEnum SetStateEnum(AuthorizationStateEnum authEnum,
         InvoiceAuthorizationStateEnum currState)
     {
         if (authEnum == AuthorizationStateEnum.Reverted && currState == InvoiceAuthorizationStateEnum.WaitingForApproval)

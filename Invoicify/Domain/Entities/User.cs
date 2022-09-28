@@ -12,7 +12,7 @@ public class User : BaseEntity
     public List<UserRole> Roles { get; set; }
     public List<UserContractor>? AssociatedContractors { get; set; }
 
-    public string login { get; set; }
-    public string password { get; set; }
+    public string Username { get; set; } = String.Empty;
+    public string Password { get; set; } = String.Empty;
     
 }

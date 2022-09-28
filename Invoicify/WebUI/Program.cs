@@ -46,6 +46,8 @@ app.UseSwagger();
 app.MapGet("/", () => "Hello World!");
 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestWebApi"); });
 app.UseSerilogRequestLogging();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.UseStaticFiles();

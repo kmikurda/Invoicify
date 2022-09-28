@@ -6,13 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Invoicify.Startups;
 
-public class ServicesRegister
+public static class StartupAutofac
 {
     public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
-        //DbContext
-        services.AddDbContext<InvoicifyContext>(opts =>
-            opts.UseSqlServer(configuration.GetConnectionString("InvoicifyContext")));
         //Repositories
         services.AddScoped<IInvoiceReadRepository, InvoiceReadRepository>();
         services.AddScoped<IInvoiceWriteRepository, InvoiceWriteRepository>();

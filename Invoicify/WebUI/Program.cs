@@ -36,22 +36,12 @@ StartupAuth.RegisterServices(builder.Services);
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
-
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
 builder.Host.UseSerilog();
 //serilog config end
 
-try
-{
-    Log.Information("Program has been started");
-}
-catch (Exception e)
-{
-    Log.Fatal($"Fatal error: {e}");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+
 var app = builder.Build();
 app.UseSwagger();
 app.MapGet("/", () => "Hello World!");
@@ -63,4 +53,17 @@ app.UseHttpsRedirection();
 app.MapControllers();
 app.UseStaticFiles();
 app.UseCors("EnableCORS");
-app.Run();
+app.UseSerilogRequestLogging();
+try
+{
+    Log.Information("Program has been started");
+    app.Run();
+}
+catch (Exception e)
+{
+    Log.Fatal($"Fatal error: {e}");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

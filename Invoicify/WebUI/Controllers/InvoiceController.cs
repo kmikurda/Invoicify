@@ -4,6 +4,7 @@ using Domain.Enums.Authorization;
 using Domain.Enums.Invoice;
 using Infrastructure.Interfaces.Read;
 using Infrastructure.Interfaces.Write;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Invoicify.Controllers;
@@ -24,6 +25,7 @@ public class InvoiceController : ControllerBase
     }
 
     [HttpGet("[action]")]
+    [Authorize]
     public async Task<IActionResult> GetAllInvoices()
     {
         var result = await _invoiceReadRepository.GetAllAsync();

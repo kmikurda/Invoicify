@@ -1,6 +1,10 @@
 using System.Security.Cryptography;
+using System.Text;
+using Application.Commands;
 using Application.Dto;
+using Common.CQRS.Queries;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Invoicify.Controllers;
@@ -9,7 +13,14 @@ namespace Invoicify.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    public static User user = new User();
+    private static readonly User user = new User();
+    private readonly IQueryBus _queryBus;
+
+
+    public AuthController(IQueryBus queryBus)
+    {
+        _queryBus = queryBus;
+    }
 
     [HttpPost("[action]")]
     public async Task<ActionResult<User>> RegisterUser(AuthDto authDto)
@@ -17,27 +28,29 @@ public class AuthController : ControllerBase
           CreatePasswordHash(authDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
           user.Username = authDto.Username;
-          user.PasswordHash = passwordHash;
-          user.PasswordSalt = passwordSalt;
+        
           // have to add rules
           return Ok(user);
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult<string>> Login(AuthDto request)
+    public async Task<IActionResult> Login(LoginQuery loginQuery)
     {
-        if (user.Username != request.Username)
-        {
-            
-        }
+        var result = await _queryBus.Send<LoginQuery,AuthToken>(loginQuery);
+        return !string.IsNullOrEmpty(result.TokenString) ? Ok(result) : NotFound();
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "DevAdmin")]
+    public string WriteSomething()
+    {
+        return "RETURNED!";
     }
 
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
-        using (var hmac = new HMACSHA512())
-        {
-            passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        }
+        using var hmac = new HMACSHA512();
+        passwordSalt = hmac.Key;
+        passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
     }
 }

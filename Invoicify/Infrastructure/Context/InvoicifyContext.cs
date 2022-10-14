@@ -51,7 +51,7 @@ public class InvoicifyContext : DbContext
         modelBuilder.Entity<Contractor>().ToTable("Contractors");
         modelBuilder.Entity<Product>().ToTable("Products");
         modelBuilder.Entity<User>().ToTable("Users");
-        modelBuilder.Entity<UserContractor>().ToTable("UserContractor");
+        modelBuilder.Entity<UserContractor>().ToTable("UserContractor ");
         modelBuilder.Entity<UserRole>().ToTable("UserRoles");
         modelBuilder.Entity<InvoiceStateAction>().ToTable("InvoiceStateActions", ia => ia.IsTemporal());
 

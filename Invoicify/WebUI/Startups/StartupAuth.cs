@@ -5,9 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Invoicify.Startups;
 
-public static class AuthStartup
+public static class StartupAuth
 {
-    public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
+    public static void RegisterServices(IServiceCollection services)
     {
         services.AddAuthentication(opt =>
             {

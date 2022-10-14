@@ -1,3 +1,4 @@
+using System.Reflection;
 using Application.Queries;
 using Invoicify.Startups;
 using MediatR;
@@ -9,18 +10,28 @@ var environment = Environment.GetEnvironmentVariable("MCS_ENVIRONMENT") ?? "Deve
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMediatR(typeof(GetAllUsersQuery));
+//builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("EnableCORS", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Configuration
     .AddJsonFile("appsettings.json", false, true)
     .AddJsonFile($"appsettings.{environment}.json", true, true)
     .AddEnvironmentVariables();
-
-ServicesRegister.RegisterServices(builder.Services,builder.Configuration);
+StartupCQRS.RegisterServices(builder.Services);
+StartupAutofac.RegisterServices(builder.Services);
+StartupContext.RegisterContext(builder.Services, builder.Configuration);
+StartupAuth.RegisterServices(builder.Services);
 // Serilog config
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
@@ -51,4 +62,5 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.UseStaticFiles();
+app.UseCors("EnableCORS");
 app.Run();

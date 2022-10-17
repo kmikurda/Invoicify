@@ -32,14 +32,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery,AuthToken>
     {
         try
         {
-            Log.Information("asd");
-
-           // var user = _userReadRepository.FindBy(x => x.Username == query.UserName).FirstOrDefault();
-           var user = new User()
-           {
-               Username = "asd",
-               Password = "asd"
-           };
+            _logger.LogInformation($"Checking there is exist user with name: {query.Login}");
+            var user = _userReadRepository.FindBy(x => x.Login == query.Login).FirstOrDefault();
             if (user == null)
             {
                 _logger.LogError("User not exist");
@@ -53,8 +47,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery,AuthToken>
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, UserRoleEnum.DevAdmin.ToString())
+                new Claim(ClaimTypes.Name, user.Login),
+                new Claim(ClaimTypes.Role, UserRoleEnum.DevAdmin.ToString()) // TODO
             };
             
             

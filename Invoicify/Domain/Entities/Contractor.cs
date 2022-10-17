@@ -16,7 +16,5 @@ public class Contractor : BaseEntity
     public string? NIP { get; set; }
     [MaxLength(32)]
     public string? REGON { get; set; }
-
-    public List<UserContractor>? AssociatedEmployees { get; set; }
     public List<Invoice>? Invoices { get; set; }
 }

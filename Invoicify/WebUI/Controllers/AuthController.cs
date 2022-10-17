@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     {
           CreatePasswordHash(authDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-          user.Username = authDto.Username;
+          user.Login = authDto.Username;
         
           // have to add rules
           return Ok(user);

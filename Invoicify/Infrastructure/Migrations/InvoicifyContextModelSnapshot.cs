@@ -22,7 +22,7 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.Entities.Authorization", b =>
+            modelBuilder.Entity("Domain.Entities.AccountingNote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,7 +33,14 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("Arch")
                         .HasColumnType("bit");
 
-                    b.Property<int>("AuthorizationState")
+                    b.Property<string>("BarCodeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChargeReason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ContractorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -42,54 +49,67 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvoiceId")
+                    b.Property<int>("Currency")
                         .HasColumnType("int");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("GrossAmount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("ModDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PeriodEnd")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodEnd");
-
-                    b.Property<DateTime>("PeriodStart")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodStart");
-
-                    b.Property<int>("RejectReason")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("PaymentDeadline")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Remark")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("RevertReason")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvoiceId");
+                    b.HasIndex("ContractorId");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("AccountingNotes", (string)null);
+                });
 
-                    b.ToTable("Authorizations", (string)null);
+            modelBuilder.Entity("Domain.Entities.Cession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.ToTable(tb => tb.IsTemporal(ttb =>
-                        {
-                            ttb
-                                .HasPeriodStart("PeriodStart")
-                                .HasColumnName("PeriodStart");
-                            ttb
-                                .HasPeriodEnd("PeriodEnd")
-                                .HasColumnName("PeriodEnd");
-                        }
-                    ));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Arch")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractorId");
+
+                    b.ToTable("Cessions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Contractor", b =>
@@ -142,6 +162,55 @@ namespace Infrastructure.Migrations
                     b.ToTable("Contractors", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.InterestNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Arch")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BarCodeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("GrossAmount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentDeadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractorId");
+
+                    b.ToTable("InterestNotes", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Invoice", b =>
                 {
                     b.Property<int>("Id")
@@ -156,6 +225,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AuthorizationState")
                         .HasColumnType("int");
 
+                    b.Property<string>("BarCodeNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ContractorId")
                         .HasColumnType("int");
 
@@ -168,14 +240,17 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("int");
 
+                    b.Property<int>("CurrentOwnerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateOfPurchase")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("GrossPrice")
+                    b.Property<double>("GrossAmount")
                         .HasColumnType("float");
 
                     b.Property<bool>("HasPZ")
@@ -184,71 +259,57 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("HasToBeAuthorized")
                         .HasColumnType("bit");
 
-                    b.Property<string>("InternalInvoiceNumber")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
                     b.Property<DateTime>("InvoiceCreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("InvoiceNumber")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<string>("InvoiceFilePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("InvoiceState")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoiceType")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("NetPrice")
-                        .HasColumnType("float");
-
                     b.Property<string>("PZNumber")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PaymentDeadline")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PeriodEnd")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodEnd");
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("PeriodStart")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodStart");
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SAPInvoiceNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserAssignmentForAuthorizationId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ContractorId");
 
-                    b.ToTable("Invoices", (string)null);
+                    b.HasIndex("CurrentOwnerId");
 
-                    b.ToTable(tb => tb.IsTemporal(ttb =>
-                        {
-                            ttb
-                                .HasPeriodStart("PeriodStart")
-                                .HasColumnName("PeriodStart");
-                            ttb
-                                .HasPeriodEnd("PeriodEnd")
-                                .HasColumnName("PeriodEnd");
-                        }
-                    ));
+                    b.HasIndex("UserAssignmentForAuthorizationId");
+
+                    b.ToTable("Invoices", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.InvoiceStateAction", b =>
+            modelBuilder.Entity("Domain.Entities.InvoiceHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ActionType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Arch")
                         .HasColumnType("bit");
@@ -262,42 +323,72 @@ namespace Infrastructure.Migrations
                     b.Property<int>("InvoiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvoiceState")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ModDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PeriodEnd")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodEnd");
-
-                    b.Property<DateTime>("PeriodStart")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodStart");
+                    b.Property<int>("RejectAuthorizationReason")
+                        .HasColumnType("int");
 
                     b.Property<string>("Remark")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RevertAuthorizationReason")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("InvoiceStateActions", (string)null);
+                    b.ToTable("InvoiceHistory", (string)null);
+                });
 
-                    b.ToTable(tb => tb.IsTemporal(ttb =>
-                        {
-                            ttb
-                                .HasPeriodStart("PeriodStart")
-                                .HasColumnName("PeriodStart");
-                            ttb
-                                .HasPeriodEnd("PeriodEnd")
-                                .HasColumnName("PeriodEnd");
-                        }
-                    ));
+            modelBuilder.Entity("Domain.Entities.PaymentDemand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Arch")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BarCodeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("GrossAmount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentDeadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractorId");
+
+                    b.ToTable("PaymentDemands", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -317,6 +408,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<double>("GrossAmount")
+                        .HasColumnType("float");
+
                     b.Property<int>("InvoiceId")
                         .HasColumnType("int");
 
@@ -328,7 +422,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<double>("NetPrice")
+                    b.Property<double>("NetAmount")
                         .HasColumnType("float");
 
                     b.Property<int>("Qty")
@@ -361,6 +455,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ModDate")
                         .HasColumnType("datetime2");
 
@@ -369,37 +467,39 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserContractor", b =>
+            modelBuilder.Entity("Domain.Entities.UserCostType", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CostType")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ContractorId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("UserId", "ContractorId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("ContractorId");
-
-                    b.ToTable("UserContractor", (string)null);
+                    b.ToTable("UserCostType");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserRole", b =>
@@ -423,23 +523,37 @@ namespace Infrastructure.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Authorization", b =>
+            modelBuilder.Entity("Domain.Entities.AccountingNote", b =>
                 {
-                    b.HasOne("Domain.Entities.Invoice", "Invoice")
-                        .WithMany("Authorizations")
-                        .HasForeignKey("InvoiceId")
+                    b.HasOne("Domain.Entities.Contractor", "Contractor")
+                        .WithMany("AccountingNotes")
+                        .HasForeignKey("ContractorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.Navigation("Contractor");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Cession", b =>
+                {
+                    b.HasOne("Domain.Entities.Contractor", "Contractor")
+                        .WithMany("Cessions")
+                        .HasForeignKey("ContractorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Invoice");
+                    b.Navigation("Contractor");
+                });
 
-                    b.Navigation("User");
+            modelBuilder.Entity("Domain.Entities.InterestNote", b =>
+                {
+                    b.HasOne("Domain.Entities.Contractor", "Contractor")
+                        .WithMany("InterestNotes")
+                        .HasForeignKey("ContractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contractor");
                 });
 
             modelBuilder.Entity("Domain.Entities.Invoice", b =>
@@ -450,24 +564,51 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.User", "CurrentOwner")
+                        .WithMany("InvoicesOwnership")
+                        .HasForeignKey("CurrentOwnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "UserAssignmentForAuthorization")
+                        .WithMany("InvoicesForAuthorization")
+                        .HasForeignKey("UserAssignmentForAuthorizationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Contractor");
+
+                    b.Navigation("CurrentOwner");
+
+                    b.Navigation("UserAssignmentForAuthorization");
                 });
 
-            modelBuilder.Entity("Domain.Entities.InvoiceStateAction", b =>
+            modelBuilder.Entity("Domain.Entities.InvoiceHistory", b =>
                 {
                     b.HasOne("Domain.Entities.Invoice", "Invoice")
-                        .WithMany("InvoiceStateActions")
+                        .WithMany("InvoiceHistory")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PaymentDemand", b =>
+                {
+                    b.HasOne("Domain.Entities.Contractor", "Contractor")
+                        .WithMany("PaymentDemands")
+                        .HasForeignKey("ContractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contractor");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.HasOne("Domain.Entities.Invoice", "Invoice")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -475,21 +616,13 @@ namespace Infrastructure.Migrations
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserContractor", b =>
+            modelBuilder.Entity("Domain.Entities.UserCostType", b =>
                 {
-                    b.HasOne("Domain.Entities.Contractor", "Contractor")
-                        .WithMany("AssociatedEmployees")
-                        .HasForeignKey("ContractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("AssociatedContractors")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Contractor");
 
                     b.Navigation("User");
                 });
@@ -507,23 +640,29 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Contractor", b =>
                 {
-                    b.Navigation("AssociatedEmployees");
+                    b.Navigation("AccountingNotes");
+
+                    b.Navigation("Cessions");
+
+                    b.Navigation("InterestNotes");
 
                     b.Navigation("Invoices");
+
+                    b.Navigation("PaymentDemands");
                 });
 
             modelBuilder.Entity("Domain.Entities.Invoice", b =>
                 {
-                    b.Navigation("Authorizations");
-
-                    b.Navigation("InvoiceStateActions");
-
-                    b.Navigation("Products");
+                    b.Navigation("InvoiceHistory");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("AssociatedContractors");
+
+                    b.Navigation("InvoicesForAuthorization");
+
+                    b.Navigation("InvoicesOwnership");
 
                     b.Navigation("Roles");
                 });

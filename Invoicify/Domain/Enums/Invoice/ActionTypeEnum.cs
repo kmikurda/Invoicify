@@ -10,6 +10,7 @@ public enum ActionTypeEnum
     AssignmentForAuthorization,
     UndoAssignmentForAuthorization,
     Authorization,
+    PartiallyAuthorization,
     RevertedAuthorization,
     RejectedAuthorization,
     UndoAuthorizationAction,
@@ -23,5 +24,6 @@ public enum ActionTypeEnum
     UndoPosted,
     Paid,
     UndoPaid,
-    
+    Suspend,
+    UndoSuspend
 }

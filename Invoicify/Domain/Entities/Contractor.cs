@@ -17,4 +17,9 @@ public class Contractor : BaseEntity
     [MaxLength(32)]
     public string? REGON { get; set; }
     public List<Invoice>? Invoices { get; set; }
+    public List<PaymentDemand>? PaymentDemands { get; set; }
+    public List<AccountingNote> AccountingNotes { get; set; }
+    public List<InterestNote> InterestNotes { get; set; }
+    public List<Cession> Cessions { get; set; }
+
 }

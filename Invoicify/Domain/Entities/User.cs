@@ -13,5 +13,8 @@ public class User : BaseEntity
     public List<UserCostType>? AssociatedContractors { get; set; }
     public string Login { get; set; }
     public string Password { get; set; }
+    public List<Invoice> InvoicesOwnership { get; set; }
+    public List<Invoice> InvoicesForAuthorization { get; set; }
+    
     
 }

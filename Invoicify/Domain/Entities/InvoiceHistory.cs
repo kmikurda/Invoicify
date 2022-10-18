@@ -1,4 +1,5 @@
 ﻿using Common.Helpers.TimeProvider;
+using Domain.Enums.Authorization;
 using Domain.Enums.Invoice;
 
 namespace Domain.Entities;
@@ -10,4 +11,6 @@ public class InvoiceHistory : BaseEntity
 
     public string? Remark { get; set; }
     public ActionTypeEnum ActionType { get; set; }
+    public RejectAuthorizationReasonEnum RejectAuthorizationReason { get; set; }
+    public RevertAuthorizationReasonEnum RevertAuthorizationReason { get; set; }
 }

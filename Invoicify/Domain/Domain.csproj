@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.4.0" />
+      <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
         <PrivateAssets>all</PrivateAssets>
@@ -26,6 +29,11 @@
       <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.3-dev-00066" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00337" />
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
     
 </Project>

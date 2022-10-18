@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class Contractor
+public class Contractor : BaseEntity
 {
     [MaxLength(256)]
     public string Name { get; set; }
@@ -16,7 +16,5 @@ public class Contractor
     public string? NIP { get; set; }
     [MaxLength(32)]
     public string? REGON { get; set; }
-
-    public List<UserContractor>? AssociatedEmployees { get; set; }
     public List<Invoice>? Invoices { get; set; }
 }

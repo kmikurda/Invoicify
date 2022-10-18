@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.4.0" />
+      <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
         <PrivateAssets>all</PrivateAssets>
@@ -18,6 +21,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
       <PackageReference Include="Serilog" Version="2.12.0-dev-01439" />
       <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
       <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.1-dev-00787" />
@@ -26,14 +31,12 @@
       <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.3-dev-00066" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00337" />
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Interfaces\Write" />
     </ItemGroup>
 
 </Project>

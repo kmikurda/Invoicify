@@ -1,10 +1,9 @@
+using Common.CQRS.Commands;
 using Domain.Entities;
-using Domain.Enums;
-using MediatR;
 
 namespace Application.Commands;
 
-public class CreateUserCommand : IRequest<User>
+public class CreateUserCommand : BaseCommand
 {
     public string Name { get; set; }
     public string Surname { get; set; }

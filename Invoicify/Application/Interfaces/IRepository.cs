@@ -15,11 +15,9 @@ public interface IWriteRepository<T> : IDisposable, IRepository where T : BaseEn
     void SoftDelete(T entity);
     void SoftDeleteWhere(Expression<Func<T, bool>> predicate);
     Task SaveChangesAsync();
-    Task StartTransaction(CancellationToken token);
-    void CommitTransaction();
-    void RollbackTransaction();
+ 
     Task<List<T>> GetAllAsync();
-
+    void Update(T entity);
 }
 
 public interface IReadRepository<T> : IDisposable, IRepository where T : BaseEntity, new()

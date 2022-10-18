@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Helpers.TimeProvider;
+﻿namespace Common.Helpers.TimeProvider;
 
 public static class SystemTime
 {

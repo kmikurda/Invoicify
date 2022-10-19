@@ -71,12 +71,14 @@ public class InvoicifyContext : DbContext
         modelBuilder.Entity<Invoice>().HasOne<User>(i => i.CurrentOwner)
             .WithMany(co => co.InvoicesOwnership)
             .OnDelete(DeleteBehavior.NoAction)
-            .HasForeignKey(i => i.CurrentOwnerId);
+            .HasForeignKey(i => i.CurrentOwnerId)
+            .IsRequired(false);
         
         modelBuilder.Entity<Invoice>().HasOne<User>(i => i.UserAssignmentForAuthorization)
             .WithMany(co => co.InvoicesForAuthorization)
             .OnDelete(DeleteBehavior.NoAction)
-            .HasForeignKey(i => i.UserAssignmentForAuthorizationId);
+            .HasForeignKey(i => i.UserAssignmentForAuthorizationId)
+            .IsRequired(false);
         
 
         //Payment demand

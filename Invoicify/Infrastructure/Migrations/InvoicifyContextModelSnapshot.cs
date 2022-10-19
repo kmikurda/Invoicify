@@ -40,7 +40,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ContractorId")
+                    b.Property<int?>("ContractorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -176,7 +176,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("BarCodeNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ContractorId")
+                    b.Property<int?>("ContractorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -228,7 +228,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("BarCodeNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ContractorId")
+                    b.Property<int?>("ContractorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -240,7 +240,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("int");
 
-                    b.Property<int>("CurrentOwnerId")
+                    b.Property<int?>("CurrentOwnerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfPurchase")
@@ -286,7 +286,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("SAPInvoiceNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserAssignmentForAuthorizationId")
+                    b.Property<int?>("UserAssignmentForAuthorizationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -356,7 +356,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("BarCodeNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ContractorId")
+                    b.Property<int?>("ContractorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -527,9 +527,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Contractor", "Contractor")
                         .WithMany("AccountingNotes")
-                        .HasForeignKey("ContractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContractorId");
 
                     b.Navigation("Contractor");
                 });
@@ -549,9 +547,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Contractor", "Contractor")
                         .WithMany("InterestNotes")
-                        .HasForeignKey("ContractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContractorId");
 
                     b.Navigation("Contractor");
                 });
@@ -560,21 +556,17 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Contractor", "Contractor")
                         .WithMany("Invoices")
-                        .HasForeignKey("ContractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContractorId");
 
                     b.HasOne("Domain.Entities.User", "CurrentOwner")
                         .WithMany("InvoicesOwnership")
                         .HasForeignKey("CurrentOwnerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.User", "UserAssignmentForAuthorization")
                         .WithMany("InvoicesForAuthorization")
                         .HasForeignKey("UserAssignmentForAuthorizationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Contractor");
 
@@ -598,9 +590,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Contractor", "Contractor")
                         .WithMany("PaymentDemands")
-                        .HasForeignKey("ContractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContractorId");
 
                     b.Navigation("Contractor");
                 });

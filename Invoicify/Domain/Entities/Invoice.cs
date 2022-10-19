@@ -21,8 +21,8 @@ public class Invoice : BaseDocument
     
     public User? CurrentOwner { get; set; }
     public User? UserAssignmentForAuthorization { get; set; }
-    public int CurrentOwnerId { get; set; }
-    public int UserAssignmentForAuthorizationId { get; set; }
+    public int? CurrentOwnerId { get; set; }
+    public int? UserAssignmentForAuthorizationId { get; set; }
     
 
 }

@@ -4,5 +4,7 @@ public enum CostTypeEnum
 {
     Transport,
     Service,
-    Maintenance
+    Material,
+    FixedAssets,
+    Other
 }

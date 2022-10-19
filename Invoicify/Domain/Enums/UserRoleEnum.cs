@@ -5,7 +5,7 @@ namespace Domain.Enums;
 public enum UserRoleEnum
 {
     [Description("Przeglądający")]
-    Readonly,
+    Readonly = 1,
     [Description("Potwierdzający")]
     Approval,
     [Description("Księgowość")]

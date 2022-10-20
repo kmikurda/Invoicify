@@ -20,7 +20,7 @@ public class Invoice : BaseDocument
     public string? InvoiceFilePath { get; set; }
     
     public User? CurrentOwner { get; set; }
-    public User? UserAssignmentForAuthorization { get; set; }
+    public User? UserAssignmentForAuthorization { get; set; } //TODO Assignment -> Assigned
     public int? CurrentOwnerId { get; set; }
     public int? UserAssignmentForAuthorizationId { get; set; }
     

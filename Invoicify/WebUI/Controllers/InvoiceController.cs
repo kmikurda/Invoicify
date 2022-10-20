@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using Application.Queries.Invoices;
+using Common.CQRS.Commands;
+using Common.CQRS.Queries;
 using Domain.Entities;
 using Domain.Enums.Authorization;
 using Domain.Enums.Invoice;
@@ -6,6 +9,7 @@ using Infrastructure.Interfaces.Read;
 using Infrastructure.Interfaces.Write;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Invoicify.Controllers;
 
@@ -13,45 +17,67 @@ namespace Invoicify.Controllers;
 [Route("[controller]")]
 public class InvoiceController : ControllerBase
 {
-    private readonly IInvoiceReadRepository _invoiceReadRepository;
-    private readonly IInvoiceWriteRepository _invoiceWriteRepository;
+    private readonly IQueryBus _queryBus;
+    private readonly ICommandBus _commandBus;
 
-    public InvoiceController(IInvoiceReadRepository invoiceReadRepository,
-        IInvoiceWriteRepository invoiceWriteRepository)
+    public InvoiceController(IQueryBus queryBus, ICommandBus commandBus)
     {
-        _invoiceReadRepository = invoiceReadRepository;
-        _invoiceWriteRepository = invoiceWriteRepository;
+        _queryBus = queryBus;
+        _commandBus = commandBus;
     }
 
     [HttpGet("[action]")]
-    [Authorize]
+    [ProducesResponseType(typeof(List<Invoice>), 200)]
+
     public async Task<IActionResult> GetAllInvoices()
     {
-        var result = await _invoiceReadRepository.GetAllAsync();
-        return Ok(result);
+        var result = await _queryBus.Send<GetAllInvoicesQuery, List<Invoice>>(new GetAllInvoicesQuery());
+        return result.IsNullOrEmpty() == false ?  Ok(result) :  NotFound();
     }
 
-    [HttpGet("[action]")]
-    public async Task<IActionResult> GetInvoiceHistory()
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(List<Invoice>), 200)]
+    public async Task<IActionResult> GetInvoiceById(int id)
     {
-        var result = await _invoiceReadRepository.GetInvoiceHistory(2);
-        return Ok(result);
+        var result = await _queryBus.Send<GetInvoiceByIdQuery, Invoice>(new GetInvoiceByIdQuery());
+        return result == null ?  Ok(result) :  NotFound();
     }
 
+    
     [HttpGet("[action]")]
-    public async Task<IActionResult> SeedInvoice()
+    [ProducesResponseType(typeof(List<Invoice>), 200)]
+    public async Task<IActionResult> GetUnassignedInvoices()
     {
-        var invoice = new Invoice()
-        {
-            CreateDate = DateTime.Now,
-            ModDate = DateTime.Now,
-            DateOfPurchase = DateTime.Now,
-            HasPZ = true,
-            HasToBeAuthorized = true,
-            ContractorId = 1
-        };
-        _invoiceWriteRepository.Add(invoice);
-        await _invoiceWriteRepository.SaveChangesAsync();
-        return Ok(invoice);
+        var result = await _queryBus.Send<GetUnassignedInvoicesQuery, List<Invoice>>(new GetUnassignedInvoicesQuery());
+        return result.IsNullOrEmpty() == false ?  Ok(result) :  NotFound();
     }
+
+    [HttpGet("[action]/{id:int}")]
+    [ProducesResponseType(typeof(List<Invoice>), 200)]
+    public async Task<IActionResult> GetInvoicesByOwner(int id)
+    {
+        var result = await _queryBus.Send<GetInvoiceByOwnerQuery, List<Invoice>>
+        (new GetInvoiceByOwnerQuery(){OwnerId = id});
+        return result.IsNullOrEmpty() == false ?  Ok(result) :  NotFound();
+    }
+    
+    [HttpGet("[action]/{id:int}")]
+    [ProducesResponseType(typeof(List<Invoice>), 200)]
+    public async Task<IActionResult> GetInvoicesToAuthorizationByUser(int id)
+    {
+        var result = await _queryBus.Send<GetInvoicesToAuthorizationByUserQuery, List<Invoice>>
+            (new GetInvoicesToAuthorizationByUserQuery(){UserAssignedForAuthorization = id});
+        return result.IsNullOrEmpty() == false ?  Ok(result) :  NotFound();
+    }
+
+    [HttpGet("[action]/{id:int}")]
+    [ProducesResponseType(typeof(List<Invoice>), 200)]
+    public async Task<IActionResult> GetWaitingForVerificationInvoices()
+    {
+        var result = await _queryBus.Send<GetWaitingForVerificationInvoicesQuery, List<Invoice>>(new GetWaitingForVerificationInvoicesQuery());
+        return result.IsNullOrEmpty() == false ?  Ok(result) :  NotFound();
+    }
+    
+    
+
 }

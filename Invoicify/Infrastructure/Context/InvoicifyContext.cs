@@ -44,6 +44,7 @@ public class InvoicifyContext : DbContext
     public DbSet<InterestNote>? InterestNotes { get; set; }
     public DbSet<PaymentDemand>? PaymentDemands { get; set; }
     public DbSet<Cession> Cessions { get; set; }
+    //TODO UserCostType
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
